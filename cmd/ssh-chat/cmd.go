@@ -33,7 +33,6 @@ type Options struct {
 	Admin      string `long:"admin" description:"File of public keys who are admins."`
 	Bind       string `long:"bind" description:"Host and port to listen on." default:"0.0.0.0:2022"`
 	Identity   string `short:"i" long:"identity" description:"Private key to identify server with." default:"~/.ssh/id_rsa"`
-	Log        string `long:"log" description:"Write chat log to this file."`
 	Motd       string `long:"motd" description:"Optional Message of the Day file."`
 	Pprof      int    `long:"pprof" description:"Enable pprof http server for profiling."`
 	Verbose    []bool `short:"v" long:"verbose" description:"Show verbose logging."`
@@ -221,16 +220,6 @@ func main() {
 		} else {
 			host.SetMotd(motdString)
 		}
-	}
-
-	if options.Log == "-" {
-		host.SetLogging(os.Stdout)
-	} else if options.Log != "" {
-		fp, err := os.OpenFile(options.Log, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-		if err != nil {
-			fail(8, "Failed to open log file for writing: %v", err)
-		}
-		host.SetLogging(fp)
 	}
 
 	go host.Serve()

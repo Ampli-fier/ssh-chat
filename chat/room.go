@@ -3,7 +3,6 @@ package chat
 import (
 	"errors"
 	"fmt"
-	"io"
 	"sort"
 	"sync"
 
@@ -70,11 +69,6 @@ func (r *Room) Close() {
 		r.Members.Clear()
 		close(r.broadcast)
 	})
-}
-
-// SetLogging sets logging output for the room's history
-func (r *Room) SetLogging(out io.Writer) {
-	r.history.SetOutput(out)
 }
 
 // HandleMsg reacts to a message, will block until done.
