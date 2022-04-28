@@ -45,7 +45,7 @@ const extraHelp = `There are hidden options and easter eggs in ssh-chat. The sou
 place to start looking. Some useful links:
 
 * Project Repository:
-  https://github.com/shazow/ssh-chat
+  https://github.com/Ampli-fier/ssh-chat/tree/v1.10.1_modified
 * Project Wiki FAQ:
   https://github.com/shazow/ssh-chat/wiki/FAQ
 `
