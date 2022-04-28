@@ -332,19 +332,6 @@ func InitCommands(c *Commands) {
 			}
 
 			u.SetConfig(cfg)
-
-			var body string
-			if cfg.Timeformat != nil {
-				if cfg.Timezone != nil {
-					tzname := time.Now().In(cfg.Timezone).Format("MST")
-					body = fmt.Sprintf("Timestamp is toggled ON, timezone is %q", tzname)
-				} else {
-					body = "Timestamp is toggled ON, timezone is UTC"
-				}
-			} else {
-				body = "Timestamp is toggled OFF"
-			}
-			room.Send(message.NewSystemMsg(body, u))
 			return nil
 		},
 	})
