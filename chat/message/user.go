@@ -177,7 +177,8 @@ func (u *User) render(m Message) string {
 	var out string
 	switch m := m.(type) {
 	case PublicMsg:
-		if u == m.From() {
+		//if u == m.From() {
+		if u.Name() == m.from.Name() {
 			u.mu.Lock()
 			u.lastMsg = m.Timestamp()
 			u.mu.Unlock()

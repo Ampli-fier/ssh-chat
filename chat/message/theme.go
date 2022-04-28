@@ -4,6 +4,11 @@ import (
 	"fmt"
 )
 
+// Colors from:
+// https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit
+var colorIdOwn int = 105
+var colorIdOther int = 226
+
 const (
 	// Reset resets the color
 	Reset = "\033[0m"
@@ -100,6 +105,10 @@ func (p Palette) Get(i int) Style {
 	if p.size == 1 {
 		return p.colors[0]
 	}
+	//fmt.Println("p.size:", p.size)
+	//fmt.Println("p.colors:", p.colors)
+	//fmt.Println("i:", i)
+	//fmt.Println("Get return:", p.colors[i%(p.size-1)])
 	return p.colors[i%(p.size-1)]
 }
 
@@ -141,7 +150,38 @@ func (theme Theme) ColorName(u *User) string {
 		return name
 	}
 
-	return theme.names.Get(u.colorIdx).Format(name)
+	return theme.names.Get(colorIdOwn).Format(name)
+
+}
+
+// Colorize the other name string given some index
+func (theme Theme) ColorNameOther(u *User) string {
+	var name string
+	if theme.useID {
+		name = u.ID()
+	} else {
+		name = u.Name()
+	}
+	if theme.names == nil {
+		return name
+	}
+
+	return theme.names.Get(colorIdOther).Format(name)
+}
+
+// Colorize the own name string given some index
+func (theme Theme) ColorNameOwn(u *User) string {
+	var name string
+	if theme.useID {
+		name = u.ID()
+	} else {
+		name = u.Name()
+	}
+	if theme.names == nil {
+		return name
+	}
+
+	return theme.names.Get(colorIdOwn).Format(name)
 }
 
 // Colorize the PM string
@@ -200,10 +240,8 @@ func readableColors256() *Palette {
 	colors := []uint8{}
 	var i uint8
 	for i = 0; i < 255; i++ {
-		if i == 0 || i == 7 || i == 8 || i == 15 || i == 16 || i == 17 || i > 230 {
-			// Skip 31 Shades of Grey, and one hyperintelligent shade of blue.
-			continue
-		}
+		// Don't exclude any color. Color number then matches with:
+		// https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit
 		colors = append(colors, i)
 	}
 	return Color256Palette(colors...)

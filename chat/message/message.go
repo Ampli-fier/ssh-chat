@@ -114,27 +114,16 @@ func (m PublicMsg) Render(t *Theme) string {
 
 // RenderFor renders the message for other users to see.
 func (m PublicMsg) RenderFor(cfg UserConfig) string {
-	if cfg.Highlight == nil || cfg.Theme == nil {
-		return m.Render(cfg.Theme)
-	}
-
-	if !cfg.Highlight.MatchString(m.body) {
-		return m.Render(cfg.Theme)
-	}
-
-	body := cfg.Highlight.ReplaceAllString(m.body, cfg.Theme.Highlight("${1}"))
+	body := m.body
 	if cfg.Bell {
 		body += Bel
 	}
-	return fmt.Sprintf("%s: %s", cfg.Theme.ColorName(m.from), body)
+	return fmt.Sprintf("%s: %s", cfg.Theme.ColorNameOther(m.from), body)
 }
 
 // RenderSelf renders the message for when it's echoing your own message.
 func (m PublicMsg) RenderSelf(cfg UserConfig) string {
-	if cfg.Theme == nil {
-		return fmt.Sprintf("[%s] %s", m.from.Name(), m.body)
-	}
-	return fmt.Sprintf("[%s] %s", cfg.Theme.ColorName(m.from), m.body)
+	return fmt.Sprintf("%s: %s", cfg.Theme.ColorNameOwn(m.from), m.body)
 }
 
 func (m PublicMsg) String() string {

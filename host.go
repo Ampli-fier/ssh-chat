@@ -20,12 +20,8 @@ const maxInputLength int = 1024
 
 // GetPrompt will render the terminal prompt string based on the user.
 func GetPrompt(user *message.User) string {
-	name := user.Name()
 	cfg := user.Config()
-	if cfg.Theme != nil {
-		name = cfg.Theme.ColorName(user)
-	}
-	return fmt.Sprintf("[%s] ", name)
+	return fmt.Sprintf("%s: ", cfg.Theme.ColorNameOwn(user))
 }
 
 // Host is the bridge between sshd and chat modules
