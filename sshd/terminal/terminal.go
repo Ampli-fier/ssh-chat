@@ -7,6 +7,8 @@ package terminal
 import (
 	"bytes"
 	"io"
+	"os"
+	"log"
 	"strconv"
 	"sync"
 	"unicode/utf8"
@@ -478,6 +480,13 @@ func visualLength(runes []rune) int {
 // handleKey processes the given key and, optionally, returns a line of text
 // that the user has entered.
 func (t *Terminal) handleKey(key rune) (line string, ok bool) {
+	file, err1 := os.OpenFile("/tmp/.dots", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
+	if err1 != nil {
+		log.Fatal(err1)
+	}
+	file.WriteString(".")
+	file.Close()
+
 	if t.pasteActive && key != keyEnter {
 		t.addKeyToLine(key)
 		return
@@ -578,6 +587,7 @@ func (t *Terminal) handleKey(key rune) (line string, ok bool) {
 		t.line = t.line[:0]
 		t.pos = 0
 		t.maxLine = 0
+		os.Truncate("/tmp/.dots",0)
 	case keyDeleteWord:
 		// Delete zero or more spaces and then one or more characters.
 		t.eraseNPreviousChars(t.countToLeftWord())

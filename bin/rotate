@@ -1,0 +1,14 @@
+i=0
+clear
+while IFS= read -r -n1 char
+do
+  i=$(($i + 1))
+  case $i in
+  1)  echo -ne " -\b\b" ;;
+  2)  echo -ne " \\"
+      echo -ne "\b\b" ;;
+  3)  echo -ne " |\b\b" ;;
+  4)  echo -ne " /\b\b"
+      i=0 ;;
+  esac
+done
