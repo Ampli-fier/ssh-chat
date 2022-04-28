@@ -97,7 +97,7 @@ func (c Commands) Help(showOp bool) string {
 
 var timeformatDatetime = "2006-01-02 15:04:05"
 
-var timeformatTime = "15:04"
+var timeformatTime = "15:04:05"
 
 var defaultCommands *Commands
 
